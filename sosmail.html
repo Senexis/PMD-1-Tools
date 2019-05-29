@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-5473621501777747",
+        enable_page_level_ads: true
+        });
+    </script>
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-110509796-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-110509796-2');
+    </script>
+
+    <title>SOS Mail Generator - Pokemon Mystery Dungeon</title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="60x60" href="/pmd-1-tools/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/pmd-1-tools/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/pmd-1-tools/favicon-16x16.png">
+    <link rel="manifest" href="/pmd-1-tools/site.webmanifest">
+    <link rel="mask-icon" href="/pmd-1-tools/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/pmd-1-tools/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/pmd-1-tools/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+        html {
+            position: relative;
+            min-height: 100%;
+        }
+
+        body {
+            margin-bottom: 120px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 60px;
+            line-height: 60px;
+            background-color: #f5f5f5;
+            border-top: 1px solid #ced4da;
+        }
+    </style>
+</head>
+
+<body style="background-color: #ddd">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Pokemon Mystery Dungeon</a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="wondermail.html">Wonder Mail Generator</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="sosmail.html">SOS Mail Generator <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="aok.html">SOS to A-OK Mail Converter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="reqflavor.html">Flavor Text in Job Requests</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="passwords.html">Passwords</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="mt-5">SOS Mail Generator</h1>
+        <div class="alert alert-info" role="alert">
+            While this tool has been tested, there is a possibility that a generated code doesn't work. If that happens, try again until it works.
+        </div>
+
+        <script src="items-en.js" type="text/javascript"></script>
+        <script src="pokemon-en.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var ChoosePokemon = "Please choose a Pokemon."
+            var SpecialChars = "Please avoid using special characters in the name."
+        </script>
+        <script src="sosmail.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            if (!String.prototype.trim) {
+                String.prototype.trim = function () {
+                    return this.replace(/^\s+|\s+$/g, '');
+                }
+            }
+            var debug = 0
+
+            function formatpass(x) {
+                x = x.replace(/[\n\s\r]/g, "").toUpperCase()
+                return x.substr(0, 5) + " " + x.substr(5, 8) + " " + x.substr(13, 5) + "\r\n" + x.substr(18, 5) + " " + x.substr(23, 8) + " " + x.substr(31, 5) + "\r\n" + x.substr(36, 5) + " " + x.substr(41, 8) + " " + x.substr(49, 5) + "\r\n"
+            }
+
+            var baddungeons = "18191E2731323336373D3F"
+            var badpokemon =
+                "C90078017C01230125010E0051005200" +
+                "33015E009100920090009C010D010C01" +
+                "0E0113019600990198019D0112011401" +
+                "95019601970197009B019A019E01A401" +
+                "A501A601"
+
+            var floors =
+                "04060A0E0A0B040D0F0D040A06100618" +
+                "041A0A2964150564150C64641A1A0D15" +
+                "331F1F1F151F100D141F0B1015151F05" +
+                "050B033346101F14140C644C29646402"
+
+            onload = function () {
+                showfloors(document.s)
+            }
+
+            function isbaditem(x) {
+                if (x >= 0xF0) return 0
+                for (var i = 0; i < baditems.length / 2; i++) {
+                    if (x == c2c(baditems, i))
+                        return 1
+                }
+                return 0
+            }
+
+            function isbaddungeon(x) {
+                if (x > 0x3F) return 1
+                for (var i = 0; i < baddungeons.length / 2; i++) {
+                    if (x == c2c(baddungeons, i))
+                        return 1
+                }
+                return 0
+            }
+
+            function getspecies(id) {
+                if (id == 0x179 || id == 0x17A || id == 0x17B)
+                    return 0x178
+                if ((id >= 0xca && id <= 0xe2) || id == 0x19F || id == 0x1A0)
+                    return 201
+                if (id == 0x1A1 || id == 0x1A2 || id == 0x1A3)
+                    return 0x19E
+                if (id == 0x1A7)
+                    return 0x19C
+                return id
+            }
+
+            function isbadpokemon(x) {
+                if (getspecies(x) != x)
+                    return 1
+                for (var i = 0; i < badpokemon.length / 2; i++) {
+                    if (x == c2w(badpokemon, i))
+                        return 1
+                }
+                return 0
+            }
+
+            function option(x) {
+                return parseInt(x[x.selectedIndex].value)
+            }
+
+            function showfloors(f) {
+                var dungeon = option(f.dungeon)
+                var numfloors = (dungeon > 0x3F) ? 1 : c2c(floors, dungeon);
+                var startfloor = (dungeon > 0x3F) ? 0 : 1;
+                f.floor.options.length = 0
+                for (var i = startfloor; i < numfloors; i++) {
+                    f.floor.options[i - startfloor] = new Option(i + "", i + "")
+                }
+            }
+
+            function showdungeon(name) {
+                document.write("<select class=\"form-control\" id=\"" + name + "\" name=\"" + name + "\" onchange=\"showfloors(this.form)\">");
+                for (var i = 0; i < dungeons.length; i++) {
+                    if (!isbaddungeon(i)) {
+                        document.write("<option value=\"" + i + "\">" + dungeons[i] + "</option>");
+                    }
+                }
+                document.write("</select>");
+            }
+
+            function genpass(f) {
+                var pass = []
+                for (var i = 0; i < 56; i++) {
+                    pass[i] = 0
+                }
+                pass[0] = 1
+                pass[1] = 0
+                pass[2] = 0
+                pass[4] = option(f.dungeon)
+                pass[5] = option(f.floor)
+                pass[8] = Math.floor(Math.random() * 256)
+                pass[9] = Math.floor(Math.random() * 256)
+                pass[10] = Math.floor(Math.random() * 256)
+                var poke = option(f.poke)
+                if (poke == 0) {
+                    alert(ChoosePokemon)
+                    return 0
+                }
+                pass[12] = poke & 0xFF
+                pass[13] = (poke >> 8) & 0xFF
+                var mailid = parseInt(f.mailid.value)
+                if (f.mailid.value == "" || isNaN(mailid)) {
+                    pass[16] = Math.floor(Math.random() * 256)
+                    pass[17] = Math.floor(Math.random() * 256)
+                } else {
+                    pass[16] = mailid & 0xFF;
+                    pass[17] = (mailid >> 8) & 0xFF
+                }
+                pass[18] = Math.floor(Math.random() * 256)
+                pass[19] = Math.floor(Math.random() * 256)
+                var pokename = f.pokename.value
+                if (!pokename) {
+                    pokename = pokemon[poke]
+                }
+                for (var i = 0; i < 10; i++) {
+                    var c = pokename.charCodeAt(i)
+                    if (c < 0x20 || (c >= 0x80 && c <= 0x9F) || c > 0xFF) {
+                        alert(SpecialChars)
+                        return 0
+                    }
+                    pass[20 + i] = c
+                }
+                var chances = parseInt(f.chances.value)
+                if (f.chances.value == "" || isNaN(chances)) {
+                    pass[44] = 10
+                } else {
+                    pass[44] = chances
+                }
+                pass[45] = 0
+                pass[36] = Math.floor(Math.random() * 256)
+                pass[37] = Math.floor(Math.random() * 256)
+                pass[38] = Math.floor(Math.random() * 256)
+                pass[39] = Math.floor(Math.random() * 256)
+                var sos = datatopass(pass)
+                f.sos.value = formatpass(sos).trim()
+                if (debug) {
+                    f.data.value = tostr(pass).trim()
+                }
+                ga('send', 'event', 'Tools', 'generate', 'PMD - Wonder Mail');
+            }
+
+            function showpkmn(name) {
+                document.write("<select class=\"form-control\" id=\"" + name + "\" name=\"" + name + "\">");
+                for (var i = 0; i < pokemon.length; i++) {
+                    if (i == 0 || 1 /*||!isbadpokemon(i)*/) {
+                        document.write("<option value=\"" + i + "\">" + pokemon[i] + "</option>");
+                    }
+                }
+                document.write("</select>");
+            }
+
+            function decsos(f) {
+                var x = f.sos.value.replace(/[\n\s\r]/g, "").toUpperCase()
+                var pass = []
+                if (!convertpass(x, pass)) {
+                    alert("The password is invalid.")
+                } else {
+                    x = datatopass(pass)
+                    f.sos.value = formatpass(x).trim()
+                    if (debug) {
+                        f.data.value = tostr(pass).trim()
+                    }
+                }
+                ga('send', 'event', 'Tools', 'decrypt', 'PMD - SOS');
+            }
+
+            function encsos(f) {
+                var pass = f.data.value.split(",")
+                for (var i = 0; i < pass.length; i++) {
+                    pass[i] = parseInt(pass[i], 16)
+                }
+                x = datatopass(pass)
+                f.sos.value = formatpass(x).trim()
+                if (debug) {
+                    f.data.value = tostr(pass).trim()
+                }
+                ga('send', 'event', 'Tools', 'encrypt', 'PMD - SOS');
+            }
+        </script>
+
+        <p>Use this tool to generate an SOS Mail for a rescue mission. Once you complete the mission, enter the A-OK Mail password you receive into the <a href="sosmail.html">Mail Converter</a> to get a Thank-You Mail password. Note also the following.</p>
+        <ul>
+            <li>For the male sign (&#x2642;), &quot;#&quot; is used instead.</li>
+            <li>For the female sign (&#x2640;), &quot;%&quot; is used instead.</li>
+            <li>For the ellipsis (&#x2026;), &quot;.&quot; is used instead.</li>
+        </ul>
+
+        <form name="s" action="javascript:void(null)">
+            <div class="form-group">
+                <label for="poke">Pokemon to Rescue</label>
+                <script type="text/javascript">showpkmn("poke");</script>
+            </div>
+
+            <div class="form-group">
+                <label for="pokename">Pokemon's Name</label>
+                <input class="form-control" id="pokename" name="pokename" type="text" maxlength="10" size="10" />
+                <small class="form-text text-muted">This field can have a maximum of 10 characters.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="dungeon">Dungeon</label>
+                <script type="text/javascript">showdungeon("dungeon");</script>
+            </div>
+
+            <div class="form-group">
+                <label for="floor">Floor</label>
+                <select class="form-control" id="floor" name="floor">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="mailid">Mail ID</label>
+                <input class="form-control" id="mailid" name="mailid" type="text" maxlength="4" size="4" />
+                <small class="form-text text-muted">This field is optional.</small>
+            </div>
+
+            <div class="form-group">
+                <label for="chances">Rescue chances</label>
+                <input class="form-control" id="chances" name="chances" type="number" value="10" min="1" max="10" />
+            </div>
+
+            <div class="form-group">
+                <input class="btn btn-info" type="button" value="Generate SOS Mail" onclick="genpass(this.form)" />
+            </div>
+
+            <div class="form-group">
+                <label for="sos">SOS Mail Password</label>
+                <textarea class="form-control" id="sos" name="sos" rows="3" cols="60" readonly="readonly"></textarea>
+            </div>
+
+            <script type="text/javascript">
+                if (debug) {
+                    document.write('<input class="btn btn-info" type="button" value="Decode SOS Mail" onclick="decsos(this.form)"/><br/>')
+                    document.write('<textarea class="form-control" id="data" name="data" rows="6" cols="60"></textarea><br/>')
+                    document.write('<input class="btn btn-info" type="button" value="Encode SOS Mail" onclick="encsos(this.form)"/><br/>')
+                }
+            </script>
+        </form>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <span class="text-muted">&copy; 2007 - 2019 &mdash; <a href="https://web.archive.org/web/20081209032443/http://www.upokecenter.com/games/dungeon/guides/sosgen.php?lang=en">Original</a> written by <a href="http://web.archive.org/web/20070701084313/http://www.upokecenter.com:80/mail.php">Peter O.</a> of <a href="http://web.archive.org/web/20080913124315/http://www.upokecenter.com:80/">The Ultimate Pokemon Center</a>. Stored for archival reasons only.</span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>
